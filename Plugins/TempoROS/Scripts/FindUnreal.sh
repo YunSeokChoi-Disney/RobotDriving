@@ -7,17 +7,17 @@
 set -e
 
 # Check for jq
-if ! which jq &> /dev/null; then
-    echo "Couldn't find jq"
-    if [[ "$OSTYPE" = "msys" ]]; then
-        echo "Install (on Windows): curl -L -o /usr/bin/jq.exe https://github.com/stedolan/jq/releases/latest/download/jq-win64.exe)"
-    elif [[ "$OSTYPE" = "darwin"* ]]; then
-        echo "Install (on Mac): brew install jq"
-    elif [[ "$OSTYPE" = "linux-gnu"* ]]; then
-        echo "Install (on Linux): sudo apt-get install jq"
-    fi
-    UNSUCCESSFUL_EXIT 1
-fi
+# if ! which jq &> /dev/null; then
+#     echo "Couldn't find jq"
+#     if [[ "$OSTYPE" = "msys" ]]; then
+#         echo "Install (on Windows): curl -L -o /usr/bin/jq.exe https://github.com/stedolan/jq/releases/latest/download/jq-win64.exe)"
+#     elif [[ "$OSTYPE" = "darwin"* ]]; then
+#         echo "Install (on Mac): brew install jq"
+#     elif [[ "$OSTYPE" = "linux-gnu"* ]]; then
+#         echo "Install (on Linux): sudo apt-get install jq"
+#     fi
+#     UNSUCCESSFUL_EXIT 1
+# fi
 
 # Function to find .uproject file
 FIND_UPROJECT_FILE() {
@@ -171,6 +171,8 @@ VALIDATE_ENGINE_PATH() {
 
 # Main execution
 main() {
+    echo "/c/Users/Monstera01/UE_5.7"
+    return 0
     local ENGINE_PATH
 
     # Check for explicit UNREAL_ENGINE_PATH environment variable
