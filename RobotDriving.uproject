@@ -13,13 +13,5 @@
 			]
 		}
 	],
-	"Plugins": [
-		{
-			"Name": "ModelingToolsEditorMode",
-			"Enabled": true,
-			"TargetAllowList": [
-				"Editor"
-			]
-		}
-	]
+	"Plugins": []
 }
