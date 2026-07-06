@@ -32,7 +32,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	TSharedPtr<FTcpListener> TcpListenr;
+	TSharedPtr<FTcpListener> TcpListener;
 	FSocket* ListenSocket;
 
 
@@ -40,36 +40,36 @@ protected:
 	int32 NextClientID;
 
 	//클라이언트 접속 처리 함수
-	bool OnConnectionAccepted(FSocket* ClientSocket, const IPV4Endpoint& ClientEndPoint);
+	bool OnConnectionAccepted(FSocket* ClientSocket, const FIPv4Endpoint& ClientEndPoint);
 
 	//주기적으로 데이터를 읽어오기 위한 타이머
 	void CheckForIncomingData();
 	FTimerHandle DataCheckTimerHandle;
 
 
-
+	
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BluePrintCallable, Catagory="Robot Network")
+	UFUNCTION(BlueprintCallable, Category="Robot Network")
 	bool StartServer(int32 Port);
 
 	//특정 로봇에게 메시지 전송하는 함수
 	UFUNCTION(BlueprintCallable, Category="Robot Network")
-	void SendMessageToRobot(int32, RobotClientID, const FString& Message);
+	void SendMessageToRobot(int32 RobotClientID, const FString& Message);
 
 
 	//블루프린트에서 바인딩할 이벤트
 
-	UPROPERTY(BluePrintAssignable, Category="Robot Network")
+	UPROPERTY(BlueprintAssignable, Category="Robot Network")
 	FOnRobotConnected OnRobotConnected;
 
-	UPROPERTY(BluePrintAssignable, Category = "Robot Network")
+	UPROPERTY(BlueprintAssignable, Category = "Robot Network")
 	FOnMessageReceived OnMessageReceived;
 
-
+	
 
 
 };
