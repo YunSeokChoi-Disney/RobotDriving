@@ -4,12 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Sockets.h"
-#include "SocketSubsystem.h"
-#include "Interfaces/IPv4/IPv4Address.h"
-#include "Robot_Base.generated.h"
+#include "Robot_Base.generated.h" // 툴이 꼬이지 않게 위쪽 전방선언을 지우고 깔끔하게 갑니다.
 
-// 델리게이트 이름이 다른 헤더와 겹치지 않도록 Robot을 붙여 변경.
+// 전방 선언은 사용할 포인터 타입만 명시합니다.
+class FSocket;
+class ISocketSubsystem;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnRobotMessageReceived, int32, RobotClientID, const FString&, Message);
 
 UCLASS()
@@ -33,6 +33,17 @@ protected:
 	FTimerHandle ReceiveTimerHandle;
 	void CheckForIncomingData();
 
+	// 중계소 서버가 부여해 준 내 로봇 고유 ID
+	UPROPERTY(BlueprintReadOnly, Category = "Robot Network")
+	int32 MyClientID;
+
+	/**
+	 * ★ [추가] 파이썬 서버로부터 회피 제어 명령("CMD_SET_EVADE_TRUE")을 받았을 때
+	 * 블루프린트 이벤트 그래프에서 직접 이벤트를 받아 블랙보드를 조작할 수 있도록 선언합니다.
+	 */
+	UFUNCTION(BlueprintImplementableEvent, Category = "Robot Network")
+	void OnReceiveEvadeCommand();
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -41,11 +52,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Robot Network")
 	bool ConnectToServer(const FString& IPAddress, int32 Port);
 
-	// 서버로 문자열을 보내는 함수
+	// 서버로 문자열을 보내는 함수 (블루프린트에서 호출 가능)
 	UFUNCTION(BlueprintCallable, Category = "Robot Network")
 	void SendMessageToServer(const FString& Message);
 
-	// 변경된 델리게이트 타입을 적용했습니다.
+	// 블루프린트에서 바인딩 가능한 델리게이트 변수
 	UPROPERTY(BlueprintAssignable, Category = "Robot Network")
 	FOnRobotMessageReceived OnMessageReceived;
 
