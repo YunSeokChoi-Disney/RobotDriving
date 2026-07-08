@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Robot_Base.h"
 
@@ -34,7 +34,7 @@ void ARobot_Base::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-// ¼­¹ö Á¾·á ¹× ¿ÀºêÁ§Æ® ÆÄ±« ½Ã ¼ÒÄÏ Á¤¸®
+// ì„œë²„ ì¢…ë£Œ ë° ì˜¤ë¸Œì íŠ¸ íŒŒê´´ ì‹œ ì†Œì¼“ ì •ë¦¬
 void ARobot_Base::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	GetWorldTimerManager().ClearTimer(ReceiveTimerHandle);
@@ -42,7 +42,7 @@ void ARobot_Base::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	if (ClientSocket)
 	{
 		ClientSocket->Close();
-		// 
+
 		ISocketSubsystem* SocketSubsystem = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM);
 		if (SocketSubsystem)
 		{
@@ -54,10 +54,9 @@ void ARobot_Base::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Super::EndPlay(EndPlayReason);
 }
 
-// ¼­¹ö Á¢¼Ó ÇÔ¼ö ±¸Çö
+// ì„œë²„ ì ‘ì† í•¨ìˆ˜ êµ¬í˜„
 bool ARobot_Base::ConnectToServer(const FString& IPAddress, int32 Port)
 {
-
 	ISocketSubsystem* SocketSubsystem = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM);
 	if (!SocketSubsystem) return false;
 
@@ -75,7 +74,7 @@ bool ARobot_Base::ConnectToServer(const FString& IPAddress, int32 Port)
 	ClientSocket = SocketSubsystem->CreateSocket(NAME_Stream, TEXT("RobotClientSocket"), false);
 	if (!ClientSocket) return false;
 
-	// ¹öÆÛ Å©±â ¼³Á¤
+	// ë²„í¼ í¬ê¸° ì„¤ì •
 	int32 NewSize = 0;
 	ClientSocket->SetReceiveBufferSize(1024 * 4, NewSize);
 	ClientSocket->SetSendBufferSize(1024 * 4, NewSize);
@@ -96,7 +95,7 @@ bool ARobot_Base::ConnectToServer(const FString& IPAddress, int32 Port)
 	return true;
 }
 
-// µ¥ÀÌÅÍ ¼ö½Å ¹× ºí·çÇÁ¸°Æ® µ¨¸®°ÔÀÌÆ® ºê·ÎµåÄ³½ºÆ®
+// ë°ì´í„° ìˆ˜ì‹  ë° ë¸”ë£¨í”„ë¦°íŠ¸ ë¸ë¦¬ê²Œì´íŠ¸ ë¸Œë¡œë“œìºìŠ¤íŠ¸
 void ARobot_Base::CheckForIncomingData()
 {
 	if (!ClientSocket) return;
@@ -113,18 +112,18 @@ void ARobot_Base::CheckForIncomingData()
 			FString ReceivedString = FString(UTF8_TO_TCHAR(reinterpret_cast<const char*>(ReceivedData.GetData())));
 			ReceivedString.LeftInline(Read);
 
-			// ¸ŞÀÎ °ÔÀÓ ½º·¹µå¿¡¼­ ¾ÈÀüÇÏ°Ô ·ÎÁ÷ Ã³¸® ¹× µ¨¸®°ÔÀÌÆ® È£Ãâ
+			// ë©”ì¸ ê²Œì„ ìŠ¤ë ˆë“œì—ì„œ ì•ˆì „í•˜ê²Œ ë¡œì§ ì²˜ë¦¬ ë° ë¸ë¦¬ê²Œì´íŠ¸ í˜¸ì¶œ
 			AsyncTask(ENamedThreads::GameThread, [this, ReceivedString]()
 				{
 					UE_LOG(LogTemp, Warning, TEXT("Received From Server: %s"), *ReceivedString);
 
-					// ºí·çÇÁ¸°Æ®·Î µ¥ÀÌÅÍ ÆĞ½º (±âÁ¸ ·ÎÁ÷ À¯Áö)
+					// ë¸”ë£¨í”„ë¦°íŠ¸ë¡œ ë°ì´í„° íŒ¨ìŠ¤ (ê¸°ì¡´ ë¡œì§ ìœ ì§€)
 					OnMessageReceived.Broadcast(MyClientID, ReceivedString);
 
-					// ¦¡¦¡¦¡ ¡Ú [Ãß°¡] ÆÄÀÌ½ã ¼­¹ö·ÎºÎÅÍ Æ¯Á¤ Á¦¾î ¸í·ÉÀÌ ¼ö½ÅµÇ¾ú´ÂÁö È®ÀÎ ¦¡¦¡¦¡
+					// íŒŒì´ì¬ ì„œë²„ë¡œë¶€í„° íŠ¹ì • ì œì–´ ëª…ë ¹ì´ ìˆ˜ì‹ ë˜ì—ˆëŠ”ì§€ í™•ì¸
 					if (ReceivedString.Contains(TEXT("CMD_SET_EVADE_TRUE")))
 					{
-						// ºí·çÇÁ¸°Æ® ÀÌº¥Æ® È£Ãâ
+						// ë¸”ë£¨í”„ë¦°íŠ¸ ì´ë²¤íŠ¸ í˜¸ì¶œ
 						OnReceiveEvadeCommand();
 					}
 				});
@@ -138,12 +137,29 @@ void ARobot_Base::CheckForIncomingData()
 	}
 }
 
-// ¼­¹ö·Î µ¥ÀÌÅÍ Àü¼Û ÇÔ¼ö ±¸Çö
+// ì„œë²„ë¡œ ë°ì´í„° ì „ì†¡ í•¨ìˆ˜ êµ¬í˜„
 void ARobot_Base::SendMessageToServer(const FString& Message)
 {
 	if (!ClientSocket) return;
 
-	FTCHARToUTF8 Converter(*Message);
-	int32 BytesSent = 0;
-	ClientSocket->Send(reinterpret_cast<const uint8*>(Converter.Get()), Converter.Length(), BytesSent);
+	// 1. ë’¤ì— ê°œí–‰ ë¬¸ì(\n)ê°€ ë¶™ì€ ìƒˆë¡œìš´ ë¬¸ìì—´ ìƒì„±
+	FString SafeMessage = Message;
+	if (!SafeMessage.EndsWith(TEXT("\n")))
+	{
+		SafeMessage += TEXT("\n");
+	}
+
+	// 2. TCHARí˜• ë¬¸ìì—´ì„ UTF-8 ë°”ì´íŠ¸ ë°°ì—´ë¡œ ì¸ì½”ë”©
+	FTCHARToUTF8 Converter(*SafeMessage);
+
+	// 3. ë³€í™˜ëœ ê²°ê³¼ë¬¼ í¬ì¸í„°ì™€ ì»¨ë²„í„° ë‚´ë¶€ì— ê¸°ë¡ëœ ì‹¤ì œ UTF-8 ë°”ì´íŠ¸ ê¸¸ì´ë¥¼ ì¶”ì¶œ
+	const uint8* DataPtr = reinterpret_cast<const uint8*>(Converter.Get());
+	int32 TotalBytes = Converter.Length(); // ì—ëŸ¬ ìœ ë°œí•˜ë˜ GetLength() ëŒ€ì‹  í‘œì¤€ Length() ì ìš©
+
+	if (DataPtr && TotalBytes > 0)
+	{
+		int32 BytesSent = 0;
+		// 4. ì†Œì¼“ì„ í†µí•´ íŒŒì´ì¬ ì„œë²„ë¡œ ë°”ì´íŠ¸ ë°ì´í„° ì „ì†¡
+		ClientSocket->Send(DataPtr, TotalBytes, BytesSent);
+	}
 }
