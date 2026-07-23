@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -39,10 +39,10 @@ protected:
 	TMap<int32, FSocket*> ConnectedRobots;
 	int32 NextClientID;
 
-	//Å¬¶óÀÌ¾ğÆ® Á¢¼Ó Ã³¸® ÇÔ¼ö
+	//í´ë¼ì´ì–¸íŠ¸ ì ‘ì† ì²˜ë¦¬ í•¨ìˆ˜
 	bool OnConnectionAccepted(FSocket* ClientSocket, const FIPv4Endpoint& ClientEndPoint);
 
-	//ÁÖ±âÀûÀ¸·Î µ¥ÀÌÅÍ¸¦ ÀĞ¾î¿À±â À§ÇÑ Å¸ÀÌ¸Ó
+	//ì£¼ê¸°ì ìœ¼ë¡œ ë°ì´í„°ë¥¼ ì½ì–´ì˜¤ê¸° ìœ„í•œ íƒ€ì´ë¨¸
 	void CheckForIncomingData();
 	FTimerHandle DataCheckTimerHandle;
 
@@ -56,12 +56,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Robot Network")
 	bool StartServer(int32 Port);
 
-	//Æ¯Á¤ ·Îº¿¿¡°Ô ¸Ş½ÃÁö Àü¼ÛÇÏ´Â ÇÔ¼ö
+	//íŠ¹ì • ë¡œë´‡ì—ê²Œ ë©”ì‹œì§€ ì „ì†¡í•˜ëŠ” í•¨ìˆ˜
 	UFUNCTION(BlueprintCallable, Category="Robot Network")
 	void SendMessageToRobot(int32 RobotClientID, const FString& Message);
 
 
-	//ºí·çÇÁ¸°Æ®¿¡¼­ ¹ÙÀÎµùÇÒ ÀÌº¥Æ®
+	//ë¸”ë£¨í”„ë¦°íŠ¸ì—ì„œ ë°”ì¸ë”©í•  ì´ë²¤íŠ¸
 
 	UPROPERTY(BlueprintAssignable, Category="Robot Network")
 	FOnRobotConnected OnRobotConnected;

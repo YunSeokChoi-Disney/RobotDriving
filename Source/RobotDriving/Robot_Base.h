@@ -1,12 +1,12 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Robot_Base.generated.h" // ÅøÀÌ ²¿ÀÌÁö ¾Ê°Ô À§ÂÊ Àü¹æ¼±¾ğÀ» Áö¿ì°í ±ò²ûÇÏ°Ô °©´Ï´Ù.
+#include "Robot_Base.generated.h" // íˆ´ì´ ê¼¬ì´ì§€ ì•Šê²Œ ìœ„ìª½ ì „ë°©ì„ ì–¸ì„ ì§€ìš°ê³  ê¹”ë”í•˜ê²Œ ê°‘ë‹ˆë‹¤.
 
-// Àü¹æ ¼±¾ğÀº »ç¿ëÇÒ Æ÷ÀÎÅÍ Å¸ÀÔ¸¸ ¸í½ÃÇÕ´Ï´Ù.
+// ì „ë°© ì„ ì–¸ì€ ì‚¬ìš©í•  í¬ì¸í„° íƒ€ì…ë§Œ ëª…ì‹œí•©ë‹ˆë‹¤.
 class FSocket;
 class ISocketSubsystem;
 
@@ -26,20 +26,20 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	// ¼­¹ö¿Í ¿¬°áµÈ ¼ÒÄÏ
+	// ì„œë²„ì™€ ì—°ê²°ëœ ì†Œì¼“
 	FSocket* ClientSocket;
 
-	// ÁÖ±âÀûÀ¸·Î ¼­¹ö·ÎºÎÅÍ µ¥ÀÌÅÍ¸¦ ¹Ş±â À§ÇÑ Å¸ÀÌ¸Ó
+	// ì£¼ê¸°ì ìœ¼ë¡œ ì„œë²„ë¡œë¶€í„° ë°ì´í„°ë¥¼ ë°›ê¸° ìœ„í•œ íƒ€ì´ë¨¸
 	FTimerHandle ReceiveTimerHandle;
 	void CheckForIncomingData();
 
-	// Áß°è¼Ò ¼­¹ö°¡ ºÎ¿©ÇØ ÁØ ³» ·Îº¿ °íÀ¯ ID
+	// ì¤‘ê³„ì†Œ ì„œë²„ê°€ ë¶€ì—¬í•´ ì¤€ ë‚´ ë¡œë´‡ ê³ ìœ  ID
 	UPROPERTY(BlueprintReadOnly, Category = "Robot Network")
 	int32 MyClientID;
 
 	/**
-	 * ¡Ú [Ãß°¡] ÆÄÀÌ½ã ¼­¹ö·ÎºÎÅÍ È¸ÇÇ Á¦¾î ¸í·É("CMD_SET_EVADE_TRUE")À» ¹Ş¾ÒÀ» ¶§
-	 * ºí·çÇÁ¸°Æ® ÀÌº¥Æ® ±×·¡ÇÁ¿¡¼­ Á÷Á¢ ÀÌº¥Æ®¸¦ ¹Ş¾Æ ºí·¢º¸µå¸¦ Á¶ÀÛÇÒ ¼ö ÀÖµµ·Ï ¼±¾ğÇÕ´Ï´Ù.
+	 * â˜… [ì¶”ê°€] íŒŒì´ì¬ ì„œë²„ë¡œë¶€í„° íšŒí”¼ ì œì–´ ëª…ë ¹("CMD_SET_EVADE_TRUE")ì„ ë°›ì•˜ì„ ë•Œ
+	 * ë¸”ë£¨í”„ë¦°íŠ¸ ì´ë²¤íŠ¸ ê·¸ë˜í”„ì—ì„œ ì§ì ‘ ì´ë²¤íŠ¸ë¥¼ ë°›ì•„ ë¸”ë™ë³´ë“œë¥¼ ì¡°ì‘í•  ìˆ˜ ìˆë„ë¡ ì„ ì–¸í•©ë‹ˆë‹¤.
 	 */
 	UFUNCTION(BlueprintImplementableEvent, Category = "Robot Network")
 	void OnReceiveEvadeCommand();
@@ -48,15 +48,15 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// ¼­¹ö¿¡ Á¢¼ÓÀ» ½ÃµµÇÏ´Â ÇÔ¼ö (ºí·çÇÁ¸°Æ®¿¡¼­ È£Ãâ °¡´É)
+	// ì„œë²„ì— ì ‘ì†ì„ ì‹œë„í•˜ëŠ” í•¨ìˆ˜ (ë¸”ë£¨í”„ë¦°íŠ¸ì—ì„œ í˜¸ì¶œ ê°€ëŠ¥)
 	UFUNCTION(BlueprintCallable, Category = "Robot Network")
 	bool ConnectToServer(const FString& IPAddress, int32 Port);
 
-	// ¼­¹ö·Î ¹®ÀÚ¿­À» º¸³»´Â ÇÔ¼ö (ºí·çÇÁ¸°Æ®¿¡¼­ È£Ãâ °¡´É)
+	// ì„œë²„ë¡œ ë¬¸ìì—´ì„ ë³´ë‚´ëŠ” í•¨ìˆ˜ (ë¸”ë£¨í”„ë¦°íŠ¸ì—ì„œ í˜¸ì¶œ ê°€ëŠ¥)
 	UFUNCTION(BlueprintCallable, Category = "Robot Network")
 	void SendMessageToServer(const FString& Message);
 
-	// ºí·çÇÁ¸°Æ®¿¡¼­ ¹ÙÀÎµù °¡´ÉÇÑ µ¨¸®°ÔÀÌÆ® º¯¼ö
+	// ë¸”ë£¨í”„ë¦°íŠ¸ì—ì„œ ë°”ì¸ë”© ê°€ëŠ¥í•œ ë¸ë¦¬ê²Œì´íŠ¸ ë³€ìˆ˜
 	UPROPERTY(BlueprintAssignable, Category = "Robot Network")
 	FOnRobotMessageReceived OnMessageReceived;
 

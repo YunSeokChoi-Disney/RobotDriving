@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "RobotStationBase.h"
@@ -27,16 +27,16 @@ bool ARobotStationBase::StartServer(int32 Port)
 
 	FIPv4Endpoint Endpoint(Address, Port);
 
-	//FTcp Listener »ı¼º
+	//FTcp Listener ìƒì„±
 	TcpListener = MakeShareable(new FTcpListener(Endpoint));    
 
 	if (TcpListener.IsValid())
 	{
-		//Å¬¶óÀÌ¾ğÆ®°¡ Á¢¼ÓÇßÀ» ¶§ÀÇ Callback ÇÔ¼ö ¹ÙÀÎµù
+		//í´ë¼ì´ì–¸íŠ¸ê°€ ì ‘ì†í–ˆì„ ë•Œì˜ Callback í•¨ìˆ˜ ë°”ì¸ë”©
 		TcpListener->OnConnectionAccepted().BindUObject(this, &ARobotStationBase::OnConnectionAccepted);
 
 
-		//ÁÖ±âÀûÀ¸·Î ·Îº¿µéÀÌ º¸³½ µ¥ÀÌÅÍ°¡ ÀÖ´ÂÁö È®ÀÎ
+		//ì£¼ê¸°ì ìœ¼ë¡œ ë¡œë´‡ë“¤ì´ ë³´ë‚¸ ë°ì´í„°ê°€ ìˆëŠ”ì§€ í™•ì¸
 		GetWorldTimerManager().SetTimer(DataCheckTimerHandle, this, &ARobotStationBase::CheckForIncomingData, 0.01f, true);
 
 		UE_LOG(LogTemp, Warning, TEXT("TCP Server Started on Port %d"), Port);
@@ -54,8 +54,8 @@ bool ARobotStationBase::OnConnectionAccepted(FSocket* ClientSocket, const FIPv4E
 	int32 NewID = ++NextClientID;
 	ConnectedRobots.Add(NewID, ClientSocket);
 
-	//°ÔÀÓ ½º·¹µå ¹Û¿¡¼­ È£ÃâµÉ ¼ö ÀÖÀ¸¹Ç·Î, ¸ŞÀÎ ½º·¹µå¿¡¼­ ¾ÈÀüÇÏ°Ô µ¨¸®°ÔÀÌÆ®¸¦ ½ÇÇà
-	//ÀÌ ºÎºĞ Á» ´Ù½Ã Â¥¾ßÇÔ
+	//ê²Œì„ ìŠ¤ë ˆë“œ ë°–ì—ì„œ í˜¸ì¶œë  ìˆ˜ ìˆìœ¼ë¯€ë¡œ, ë©”ì¸ ìŠ¤ë ˆë“œì—ì„œ ì•ˆì „í•˜ê²Œ ë¸ë¦¬ê²Œì´íŠ¸ë¥¼ ì‹¤í–‰
+	//ì´ ë¶€ë¶„ ì¢€ ë‹¤ì‹œ ì§œì•¼í•¨
 
 
 
@@ -75,7 +75,7 @@ void ARobotStationBase::CheckForIncomingData()
 
 		uint32 Size;
 
-		//ÀĞÀ» µ¥ÀÌÅÍ°¡ ÀÖ´ÂÁö È®ÀÎ
+		//ì½ì„ ë°ì´í„°ê°€ ìˆëŠ”ì§€ í™•ì¸
 
 		if (Socket->HasPendingData(Size))
 		{
@@ -86,17 +86,17 @@ void ARobotStationBase::CheckForIncomingData()
 			if (Socket->Recv(ReceivedData.GetData(), ReceivedData.Num(), Read))
 			{
 
-				//¹ÙÀÌÆ® µ¥ÀÌÅÍ¸¦ FStringÀ¸·Î º¯È¯
+				//ë°”ì´íŠ¸ ë°ì´í„°ë¥¼ FStringìœ¼ë¡œ ë³€í™˜
 				FString ReceivedString = FString(UTF8_TO_TCHAR(reinterpret_cast<const char*>(ReceivedData.GetData())));
 
-				//null ¹®ÀÚ Ã³¸®
+				//null ë¬¸ì ì²˜ë¦¬
 				ReceivedString.LeftInline(Read);
 
 				OnMessageReceived.Broadcast(ClientID, ReceivedString);
 			}
 		}
 
-		//¼ÒÄÏ ¿¬°á »óÅÂ Ã¼Å©
+		//ì†Œì¼“ ì—°ê²° ìƒíƒœ ì²´í¬
 
 		if (Socket->GetConnectionState() == SCS_ConnectionError)
 		{
